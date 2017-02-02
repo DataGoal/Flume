@@ -1,0 +1,30 @@
+Twitter
+======================================================================
+
+Consumer Key (API Key) bqzWuJapnl11nIphNfGZgt0rB
+Consumer Secret (API Secret) xvukiyJi6fiHlFOvySwKwnCQvyWNLVl1Xu6luH3Va4CG5Bxnhl 
+Access Token 237170323-4GlxQ1fQYPbbYrOpI5obOOJBgBC8Oqq6Tw1HxWlz
+Access Token Secret 6tMXsbDQzzU2mzQUz9f4ICzNLFJ76CqtG9Cc3Rcrf27pT 
+
+
+we need to create a conf file to stream the data to HDFS, the created conf file should 
+be kept under /usr/local/flume/conf
+
+
+
+
+Creating table in Hive to store the Twiter data
+==========================================================================
+CREATE TABLE tweets
+  ROW FORMAT SERDE
+     'org.apache.hadoop.hive.serde2.avro.AvroSerDe'
+  STORED AS INPUTFORMAT
+     'org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat'
+  OUTPUTFORMAT
+     'org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat'
+  TBLPROPERTIES ('avro.schema.url'='file:/home/bala/Twitter.avsc') ;
+
+Loading Twitter data to Hive created table:
+===========================================================================
+LOAD DATA Local INPATH '/home/bala/FlumeData.148*' OVERWRITE INTO
+TABLE tweets;
